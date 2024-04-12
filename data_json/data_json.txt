@@ -1,0 +1,1 @@
+text of the publications en json (with abstract and body text)
