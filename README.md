@@ -16,7 +16,13 @@ The stages are as follows:
 
 ## Prerequisites
 
+### GIT
+
 You must have git to download all the files
+
+### Python
+
+Runs on versions of python 3.7 and higher
 
 ### Grobid Installation
 
