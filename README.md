@@ -74,7 +74,7 @@ import a text file containing the DOI numbers of the publications you want to ex
 to run the extraction, you need to add the txt file containing the DOI list as an argument :  
 
 ```bash
-bash extract_publi.sh doi.txt
+bash extract_publi_scihub.sh doi.txt
 ```
 
 Publications will be saved in the data_pdf folder. Publications will be saved in the data_pdf folder, with their name containing the DOI number of the publication, replacing the '/' with '%2F'.
