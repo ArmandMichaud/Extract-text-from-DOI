@@ -62,11 +62,7 @@ cd Extract-text-from-DOI
 
 ## Using the Software
 
-Before using the software, make sure to run Grobid locally. This can be done with the following command (same as installation):
 
-```bash
-sudo docker run --rm --init --ulimit core=0 -p 8070:8070 grobid/grobid:0.8.0
-```
 
 ### Retrieval of scientific publications in PDF format using Sci-Hub
 
@@ -83,13 +79,30 @@ You can manually add publications to be analyzed, or publications that could not
 
 ### Grobid analysis
 
+Before using Grobid, make sure to run Grobid locally. This can be done with the following command (same as installation):
+
+```bash
+sudo docker run --rm --init --ulimit core=0 -p 8070:8070 grobid/grobid:0.8.0
+```
+
+This launches the software in the terminal. Open another terminal to continue. To stop Grobid, close the terminal where you launched the software. 
+
 to run the Grobid analysis: 
 
 ```bash
 bash extract_text_grobid.sh
 ```
 
-Publications must be located in the data_pdf directory, and must have the .pdf extension. If extraction errors are detected, these will be marked in the error file grobid_errors.txt.
+Publications must be located in the data_pdf directory, and must have the .pdf extension. If extraction errors are detected, these will be marked in the error file grobid_errors.txt.The result of each pdfs analysis is a .tei.xml file. To recover the plain text in these files, a parser must be used. It is run automatically after Grobid analysis. The .tei.xml files will be parsed to recover the raw text of the publications. The text summary and body will be stored in a Json file.
+
+The .tei.xml files are available in the data_tei_xml directory.
+The .Json files containing the plain text are available in the data_json directory.
+
+If there are any errors during text extraction, the problem files will be written to grobid_errors.txt.
+
+
+
+ 
 
 
 
