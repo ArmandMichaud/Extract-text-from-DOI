@@ -98,7 +98,7 @@ Publications must be located in the data_pdf directory, and must have the .pdf e
 The .tei.xml files are available in the data_tei_xml directory.
 The .Json files containing the plain text are available in the data_json directory.
 
-If there are any errors during text extraction, the problem files will be written to grobid_errors.txt.
+If there are any errors during text extraction, the problem will be written in the grobid_errors.txt file.
 
 
 
