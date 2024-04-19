@@ -1,69 +1,58 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Script for extracting text from PDF files and saving it in TEI XML format.
-
-Created on Thu Feb 29 14:34:28 2024
+Created on Thu Mar 21 16:54:27 2024
 
 @author: amichaud
 """
 
+import json
+import grobid_tei_xml
+import re
 import os
-import requests
 
-def extract_text_from_pdf(pdf_path):
-    """
-    Extracts text from a PDF file using an API.
+def supprimer_refs_avec_contenu(xml_data):
+    xml_wo_ref = re.sub(r'<ref type.*?</ref>', '', xml_data, flags=re.DOTALL)
+    return xml_wo_ref
+    
 
-    Args:
-        pdf_path (str): The path to the PDF file.
 
-    Returns:
-        str: The extracted text if successful, None otherwise.
-    """
-    url = "http://localhost:8070/api/processFulltextDocument"
-    files = {'input': open(pdf_path, 'rb')}
-    response = requests.post(url, files=files)
-    if response.status_code == 200:
-        return response.text
-    else:
-        return None
+def extraction_data_tei(xml_data_modif, name_file, output_dir):
+  
+    doc = grobid_tei_xml.parse_document_xml(xml_data_modif)
+    data_parsee = json.dumps(doc.to_dict(), indent=2)
+    with open(output_dir+"/"+name_file+".json", "w") as fichier:
+        # Écrire dans le fichier
+        
+        fichier.write(data_parsee)
+        print(data_parsee)
+   
 
-def save_text_to_file(text, output_dir, pdf_filename):
-    """
-    Saves the extracted text to a file in TEI XML format.
+def lecture_xml(path_xml):
+    # Ouvre le fichier XML et lit son contenu
+    with open(path_xml, 'r', encoding='utf-8') as file:
+        xml_data = file.read()
+    return xml_data
 
-    Args:
-        text (str): The extracted text.
-        output_dir (str): The directory to save the output file.
-        pdf_filename (str): The filename of the original PDF file.
 
-    Returns:
-        None
-    """
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
-    output_filename = os.path.splitext(pdf_filename)[0] + ".tei.xml"
-    output_path = os.path.join(output_dir, output_filename)
-    with open(output_path, "w", encoding="utf-8") as output_file:
-        output_file.write(text)
-    print(f"Text saved to: {output_path}")
+
+
 
 def main():
-    # Directory containing PDF files to analyze
-    pdf_directory = "./data_pdf"
-    # Directory where you want to save the output files
-    output_dir = "./data_tei_xml" 
+    # Dossier contenant les fichiers PDF à analyser
+    tei_directory = "./data_tei_xml"
+    # Répertoire où vous souhaitez enregistrer les fichiers de sortie
+    output_dir = "./data_json" # Répertoire où vous souhaitez enregistrer le fichier de sortie
     
-    # Iterate through all files in the directory
-    for filename in os.listdir(pdf_directory):
-        if filename.endswith(".pdf"):
-            pdf_path = os.path.join(pdf_directory, filename)
-            extracted_text = extract_text_from_pdf(pdf_path)
-            if extracted_text:
-                save_text_to_file(extracted_text, output_dir, filename)
-            else:
-                print(f"Failed to extract text from PDF: {pdf_path}")
+    
+    # Parcourir tous les fichiers dans le dossier
+    for filename in os.listdir(tei_directory):
+        if filename.endswith(".tei.xml"):
+            xml_path = os.path.join(tei_directory, filename)
+            xml_data = lecture_xml(xml_path)
+            xml_data_modif = supprimer_refs_avec_contenu(xml_data)
+            extraction_data_tei(xml_data_modif,filename.replace(".tei.xml", ""), output_dir)
+
+
 
 main()
-
