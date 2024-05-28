@@ -3,34 +3,27 @@
 
 ## Introduction
 
-This software aims at conducting biological entity analysis in scientific publications. 
-The software takes DOI numbers of publications as input data but allows starting the analysis pipeline at various stages. 
+This software aims to conduct biological entity analysis of scientific publications. 
+The software takes the DOI of publications as input data, but allows users to start the analysis at various stages of the pipeline. 
 
 The stages are as follows:
 - Retrieval of scientific publications in PDF format using Sci-Hub
-- Grobid analysis (standardization of publications) for content and structure extraction of scientific publications (output in tei.xml format)
-- Parsing of generated tei.xml files to retrieve the abstract and body text of publications (output in Json format)
-
-
-- Biological entity search using Bern2 (not yet done)
+- Grobid analysis (standardisation of publications) for content and structure extraction of scientific publications (output in tei.xml format)
+- Parsing of tei.xml files to retrieve the abstract and body text of publications (output in JSON format)
+- (ToDo) Biological entity search using Bern2
 
 ## Prerequisites
 
-### GIT
+### General dependencies 
 
-You must have git to download all the files
+Bash, apt, Git, Python 3.7 or higher (in a venv), 
 
-### Python
+### Grobid
 
-Runs on versions of python 3.7 and higher
-
-### Grobid Installation
-
-You must have Docker installed: [Docker Installation Guide](https://docs.docker.com/desktop/install/ubuntu/)
+For Grobid, you must have Docker installed: [Docker Installation Guide](https://docs.docker.com/desktop/install/ubuntu/)
 
 ```bash
-sudo apt-get update
-sudo apt install docker.io
+sudo apt update && sudo apt install docker.io
 ```
 
 You need to install Grobid: [Grobid GitHub Repository](https://github.com/kermitt2/grobid)
@@ -56,13 +49,13 @@ pip install grobid_tei_xml
 Warning: Once the software is installed, do not modify the hierarchical structure of the software files!
 
 ```bash
-git clone https://github.com/ArmandMichaud/Extract-text-from-DOI Extract-text-from-DOI
-cd Extract-text-from-DOI
+git clone https://github.com/ArmandMichaud/Extract-text-from-DOI Extract-text-from-DOI && cd Extract-text-from-DOI
 ```
 
+__
+
+
 ## Using the Software
-
-
 
 ### Retrieval of scientific publications in PDF format using Sci-Hub
 
