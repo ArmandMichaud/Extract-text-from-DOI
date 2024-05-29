@@ -81,6 +81,19 @@ It is also possible to perform this step on the PubMed site in order to save a m
 
 ### Retrieving PMIDs from Aniseed
 
+Json file parser obtained by the Aniseed api 
+
+
+
+### PMIDs to DOIs
+
+The PMIDtoDOI.py script reads a text file containing a list of PMIDs, then, using the NCBI api, converts them into DOIs. Some publications may not have a DOI, in which case they will be listed in a log file contained in /logs/errors_extract_doi_from_pmid.txt.
+
+To run the script, you need to enter two parameters, the PMIDs file as input, and the DOIs file as output. 
+
+```python
+python script_python/PMIDtoDOI.py PMIDs_input.txt doi.txt
+```
 
 ### Retrieval of scientific publications in PDF format using Sci-Hub
 
@@ -91,7 +104,7 @@ to run the extraction, you need to add the txt file containing the DOI list as a
 bash extract_publi_scihub.sh doi.txt
 ```
 
-Publications will be saved in the data_pdf folder. Publications will be saved in the data_pdf folder, with their name containing the DOI number of the publication, replacing the '/' with '%2F'.
+Publications will be saved in the data_pdf folder. Publications will be saved in the data_pdf folder, with their name containing the DOI number of the publication, replacing the '/' with '%2F', the '<' with '%3C', the '>' with '%3E', the ':' with '%3A' and the ';' with '%3B'. 
 A number of publications are not available through Sci-hub. The various publications that have not been found are available in the file error_extract_scihub.txt.
 You can manually add publications to be analyzed, or publications that could not be extracted with scihub, simply by adding them to the data_pdf folder.
 
