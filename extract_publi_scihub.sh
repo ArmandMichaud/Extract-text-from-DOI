@@ -7,6 +7,9 @@
 #Finally, it prints a message indicating the completion of the download process.
 
 
+mkdir -p data_pdf
+mkdir -p logs
+
 # Check if an argument is passed
 if [ $# -ne 1 ]; then
   echo "Usage: $0 doi_file.txt"
