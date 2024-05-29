@@ -7,6 +7,9 @@
 #Finally, it prints a message indicating the completion of the download process.
 
 
+mkdir -p data_pdf
+mkdir -p logs
+
 # Check if an argument is passed
 if [ $# -ne 1 ]; then
   echo "Usage: $0 doi_file.txt"
@@ -22,8 +25,6 @@ if [ ! -f "$file" ]; then
   exit 1
 fi
 
-# Create the "dl_publis" folder if it does not exist
-mkdir -p dl_publis
 
 # Initialize the publication number
 publication_num=1
@@ -40,12 +41,13 @@ while IFS= read -r doi; do
   # Check if the URL was extracted
   if [ -z "$url" ] || [[ "$url" == "err"* ]]; then
     echo "**ERROR:** Unable to extract the URL for DOI $doi."
-    echo "$doi" >> error_extract_scihub.txt
+    echo "$doi" >> ./logs/errors_extract_scihub.txt
     continue
   fi
 
   # Modify the DOI
-  modified_doi="${doi//\//%2F}"
+  #modified_doi="${doi//\//%2F}"
+  modified_doi=$(echo "$doi" | sed -e 's/</%3C/g' -e 's/>/%3E/g' -e 's/:/%3A/g' -e 's/;/%3B/g' -e 's/\//%2F/g')
 
   # Download the PDF file
   filename="${modified_doi}.pdf"
