@@ -1,5 +1,8 @@
 #!/bin/bash
 
+mkdir -p data_tei_xml
+mkdir -p json
+
 echo "Start of Grobid analysis"
 python3 script_python/grobid_analyse.py 
 echo "Grobid analysis complete"
