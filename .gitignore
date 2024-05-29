@@ -163,4 +163,5 @@ cython_debug/
 data_pdf/*.pdf
 data_tei_xml/*tei.xml
 data_json/*json
+logs/*txt
 
