@@ -1,4 +1,3 @@
-
 # Software Documentation
 
 ## Introduction
@@ -59,44 +58,43 @@ __
 
 ### Retrieval of scientific publications in PDF format using Sci-Hub
 
-import a text file containing the DOI numbers of the publications you want to extract. There's a doi.txt file as an example file type. 
-to run the extraction, you need to add the txt file containing the DOI list as an argument :  
+import a text file containing the DOI numbers of the publications you want to extract. 
+There's a doi.txt file as an example file type. 
+To run the extraction, you need to specify the txt file containing the DOI list as an argument:  
 
 ```bash
 bash extract_publi_scihub.sh doi.txt
 ```
 
-Publications will be saved in the data_pdf folder. Publications will be saved in the data_pdf folder, with their name containing the DOI number of the publication, replacing the '/' with '%2F'.
-A number of publications are not available through Sci-hub. The various publications that have not been found are available in the file error_extract_scihub.txt.
-You can manually add publications to be analyzed, or publications that could not be extracted with scihub, simply by adding them to the data_pdf folder.
+Publications will be saved in the data_pdf/ folder, with the DOI number as their name, replacing the '/' with '%2F'.
+Some publications may not be available on Sci-Hub. Their names will be noted in the file "error_extract_scihub.txt".
+You can manually add publications to be analysed, or publications that could not be extracted with Sci-Hub, simply by adding them to the data_pdf/ folder.
 
-### Grobid analysis
+### Grobid
 
+#### Launch Grobid
 Before using Grobid, make sure to run Grobid locally. This can be done with the following command (same as installation):
-
 ```bash
-sudo docker run --rm --init --ulimit core=0 -p 8070:8070 grobid/grobid:0.8.0
+sudo docker run --rm --init --ulimit core=0 -p 8070:8070 grobid/grobid:0.8.0&
 ```
 
-This launches the software in the terminal. Open another terminal to continue. To stop Grobid, close the terminal where you launched the software. 
+This launches the software in the terminal. To stop Grobid, kill the corresponding PID. 
+(TODO) Configure and Run Grobid as a service
 
-to run the Grobid analysis: 
+#### Grobid analysis 
+You may need to install requests first: `pip install requests`
+Make sure the port 8070 is open and accessible.
 
+To run the analysis:
 ```bash
 bash extract_text_grobid.sh
 ```
 
-Publications must be located in the data_pdf directory, and must have the .pdf extension. If extraction errors are detected, these will be marked in the error file grobid_errors.txt.The result of each pdfs analysis is a .tei.xml file. To recover the plain text in these files, a parser must be used. It is run automatically after Grobid analysis. The .tei.xml files will be parsed to recover the raw text of the publications. The text summary and body will be stored in a Json file.
+Publications must be located in the data_pdf/ directory, and their names must contain the .pdf extension.
+The result of each pdf analysis is a .tei.xml file. 
+To recover the plain text from these files, a parser is run automatically after the Grobid analysis: the .tei.xml files will be parsed to recover the raw text of the publications. The abstract and the body will be stored in a JSON file.
 
-The .tei.xml files are available in the data_tei_xml directory.
-The .Json files containing the plain text are available in the data_json directory.
-
-If there are any errors during text extraction, the problem will be written in the grobid_errors.txt file.
-
-
-
- 
-
-
-
+The .tei.xml files are available in the data_tei_xml/ directory.
+The .json files containing the plain texts are available in the data_json/ directory.
+If extraction errors are detected, they will be saved in the error file grobid_errors.txt.
 
