@@ -38,7 +38,7 @@ while IFS= read -r doi; do
   # Check if the URL was extracted
   if [ -z "$url" ] || [[ "$url" == "err"* ]]; then
     echo "**ERROR:** Unable to extract the URL for DOI $doi."
-    echo "$doi" >> log/error_extract_scihub.txt
+    echo "$doi" >> log/errors_extract_scihub.txt
     continue
   fi
 
