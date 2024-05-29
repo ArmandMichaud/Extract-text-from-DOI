@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Thu Apr 11 12:40:23 2024
+Created on Mon Mar 25 11:30:37 2024
 
 @author: amichaud
 """
 
 import requests
+import json
 import argparse
 import os
+
+
 
 def get_doi_from_pmid(pmid):
     base_url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi"
@@ -24,42 +27,41 @@ def get_doi_from_pmid(pmid):
     return doi
 
 
-def lire_fichier(nom_fichier):
-    try:
-        with open(nom_fichier, "r") as f:
-            lignes = f.readlines()
-            lignes_propres = [ligne.rstrip() for ligne in lignes]  # Enlever le caractère de nouvelle ligne
-        return lignes_propres
-    except FileNotFoundError:
-        print("The file doesn't exist")
-        return []
 
 
-
-            
-            
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="PMIDs to DOIs")
-    parser.add_argument("PMID_input_file", help="Txt input file containing PMID list")
+    parser = argparse.ArgumentParser(description="parse the json file obtained with the Aniseed api")
+    
+    parser.add_argument("Json_input_file", help="Json input file containing PMID list")
     parser.add_argument("DOI_output_file", help="Txt output file containing DOI list")
 
     args = parser.parse_args()
-    PMID_input_file = args.PMID_input_file
+    Json_input_file = args.Json_input_file
     DOI_output_file = args.DOI_output_file
-    listPMID = lire_fichier(PMID_input_file)
-    erreurs = []
+    
+    try:
+        # Load JSON data
+        with open(Json_input_file, "r") as f:
+            publications = json.load(f)
+    except FileNotFoundError:
+        print("The file doesn't exist")
 
+    
+    erreurs = []    
+    # retrieve DOIs and write them to a text file
+    # or in an error file if not found
     with open(DOI_output_file, "w") as f:
-        for pmid in listPMID:
+        for publication in publications:
+            pmid = publication["value"]
             doi = get_doi_from_pmid(pmid)
             if doi:
                 f.write(doi + "\n")
             else:
                 erreurs.append(f"DOI not found for PMID {pmid}")
-
     if erreurs:
-    	os.makedirs('logs', exist_ok=True)
-        with open("logs/errors_extract_doi_from_pmid.txt", "w") as f_err:
-            for erreur in erreurs:
-                f_err.write(erreur + "\n")
+       os.makedirs('logs', exist_ok=True)
+       with open("logs/errors_extract_doi_from_pmid.txt", "w") as f_err:
+           for erreur in erreurs:
+               f_err.write(erreur + "\n")     
+
 

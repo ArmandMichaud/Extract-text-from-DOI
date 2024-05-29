@@ -81,8 +81,11 @@ It is also possible to perform this step on the PubMed site in order to save a m
 
 ### Retrieving PMIDs from Aniseed
 
-Json file parser obtained by the Aniseed api 
+Parse the json file obtained with the Aniseed api to obtain a text file containing a list of DOIs
 
+```python
+python script_python/extract_doi_from_json_aniseed.py publications_aniseed.json doi_aniseed.txt
+```
 
 
 ### PMIDs to DOIs
