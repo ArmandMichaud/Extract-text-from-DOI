@@ -59,7 +59,7 @@ def main():
     # Directory where you want to save the output files
     output_dir = "./data_tei_xml"
     # File to save extraction errors
-    error_file = "./grobid_errors.txt"
+    error_file = "./log/grobid_errors.txt"
 
     print(f"Starting the Grobid analysis of PDFs from : {pdf_directory}")
 
