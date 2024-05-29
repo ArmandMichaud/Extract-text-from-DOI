@@ -7,6 +7,9 @@ This software aims at conducting biological entity analysis in scientific public
 The software takes DOI numbers of publications as input data but allows starting the analysis pipeline at various stages. 
 
 The stages are as follows:
+- Obtain the PMIDs of scientific articles present in NCBI 
+- Extract the PMIDs from the Json file obtained with the Aniseed API (https://aniseed.fr/api)
+- Obtain DOIs for each article from PMIDs
 - Retrieval of scientific publications in PDF format using Sci-Hub
 - Grobid analysis (standardization of publications) for content and structure extraction of scientific publications (output in tei.xml format)
 - Parsing of generated tei.xml files to retrieve the abstract and body text of publications (output in Json format)
@@ -18,7 +21,7 @@ The stages are as follows:
 
 ### GIT
 
-You must have git to download all the files
+You must have git to clone all the files
 
 ### Python
 
@@ -62,6 +65,21 @@ cd Extract-text-from-DOI
 
 ## Using the Software
 
+### Retrieving PMIDs from NCBI
+
+The script generates a list of PMIDs in a txt file containing the list of publications found in the PubMed database (https://pubmed.ncbi.nlm.nih.gov/). The search criterion is the first parameter, the name of the output file the second. 
+
+```python
+python script_python/getPMID_from_NCBI.py "tunicata" PMIDs_output.txt
+```
+
+It is also possible to perform this step on the PubMed site in order to save a more refined search. 
+- Go to pubmed (https://pubmed.ncbi.nlm.nih.gov/)
+- Do your research
+- Click on Save, choose the selection and set in PMID format
+- Click on Create file and save it in this folder 
+
+### Retrieving PMIDs from Aniseed
 
 
 ### Retrieval of scientific publications in PDF format using Sci-Hub
