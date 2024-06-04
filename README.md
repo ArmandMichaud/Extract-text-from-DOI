@@ -136,6 +136,11 @@ If there are any errors during text extraction, the problem will be written in t
 
 
 
+### BERN2
+
+
+
+
  
 
 

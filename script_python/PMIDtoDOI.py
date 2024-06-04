@@ -56,10 +56,12 @@ if __name__ == "__main__":
                 f.write(doi + "\n")
             else:
                 erreurs.append(f"DOI not found for PMID {pmid}")
-
+    
     if erreurs:
-    	os.makedirs('logs', exist_ok=True)
+        os.makedirs('logs', exist_ok=True)    
         with open("logs/errors_extract_doi_from_pmid.txt", "w") as f_err:
             for erreur in erreurs:
                 f_err.write(erreur + "\n")
+  
+        
 
