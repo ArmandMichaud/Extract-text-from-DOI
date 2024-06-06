@@ -11,6 +11,33 @@ import grobid_tei_xml
 import re
 import os
 
+def process_json_string(json_string):
+    """
+    Process the JSON string to replace newlines with nothing in 'abstract' and 'body' if present.
+    
+    Args:
+        json_string (str): The input string in JSON format.
+    
+    Returns:
+        str: The modified JSON string.
+    """
+    # Parse the JSON string
+    data = json.loads(json_string)
+    
+    # Replace newlines in 'abstract' if present
+    if 'abstract' in data and data['abstract']:
+        data['abstract'] = data['abstract'].replace('\n', '')
+    
+    # Replace newlines in 'body' if present
+    if 'body' in data and data['body']:
+        data['body'] = data['body'].replace('\n', '')
+    
+    # Convert the modified data back to a JSON string
+    modified_json_string = json.dumps(data)
+    
+    return modified_json_string
+
+
 def supprimer_refs_avec_contenu(xml_data):
     xml_wo_ref = re.sub(r'<ref type.*?</ref>', '', xml_data, flags=re.DOTALL)
     return xml_wo_ref
@@ -24,8 +51,11 @@ def extraction_data_tei(xml_data_modif, name_file, output_dir):
     with open(output_dir+"/"+name_file+".json", "w") as fichier:
         # Écrire dans le fichier
         
+        
+        data_parsee = process_json_string(data_parsee)
         fichier.write(data_parsee)
         print(data_parsee)
+        
    
 
 def lecture_xml(path_xml):
