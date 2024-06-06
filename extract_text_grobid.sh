@@ -4,7 +4,7 @@ mkdir -p data_tei_xml
 mkdir -p data_json
 
 echo "Start of Grobid analysis";
-#python3 script_python/grobid_analyse.py 
+python3 script_python/grobid_analyse.py 
 echo "Grobid analysis complete";
 
 echo "Start parsing .tei.xml files";
