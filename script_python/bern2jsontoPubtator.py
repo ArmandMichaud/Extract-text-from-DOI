@@ -23,11 +23,13 @@ def generate_pubtator_format(json_data, file_name, text_part):
     # Extract the text data from the specified part (e.g., 'abstract' or 'data')
     text_data = json_data[text_part]['text']
     if text_part == 'abstract' :
-        output_lines.append(f"{file_name}|a|{text_data}")
-    elif text_part == 'body' or text_part == 'data':
-        output_lines.append(f"{file_name}|b|{text_data}")
-    elif text_part == 'title':
         output_lines.append(f"{file_name}|t|{text_data}")
+    
+    if text_part == 'body' or text_part == 'data':
+        output_lines.append(f"{file_name}|a|{text_data}")
+    
+    #elif text_part == 'title':
+    #    output_lines.append(f"{file_name}|t|{text_data}")
 
     # Extract annotations
     annotations = json_data[text_part]['annotations']
@@ -65,13 +67,13 @@ def process_file(json_file_path):
         # Check if 'data' part exists and append generated content
         if 'data' in json_data :
             if pubtator_content:  # Add a new line if there is already content
-                pubtator_content += '\n\n'
+                pubtator_content += '\n'
             pubtator_content += generate_pubtator_format(json_data, file_name, 'data')
         
         # Check if 'body' part exists and append generated content
         if 'body' in json_data :
             if pubtator_content:  # Add a new line if there is already content
-                pubtator_content += '\n\n'
+                pubtator_content += '\n'
             pubtator_content += generate_pubtator_format(json_data, file_name, 'body')
         
         return pubtator_content
@@ -84,10 +86,16 @@ def main():
     if len(sys.argv) != 3:
         print("Usage: python script.py <json_file_path_or_directory> <output_directory>")
         return
-
+        
     input_path = sys.argv[1]
     output_path = sys.argv[2]
-
+    
+    # Create the output directory if it does not exist
+    if not os.path.exists(output_path):
+        os.makedirs(output_path)
+        print(f"Created output directory: {output_path}")
+    
+        
     if os.path.isfile(input_path):
         # Process single file
         pubtator_content = process_file(input_path)

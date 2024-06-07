@@ -34,15 +34,19 @@ def process_json_file(input_file, output_dir):
     lines = []
     # Check if 'abstract' key exists and add its content to the lines
     if 'abstract' in data:
-        lines.append(f"{file_base_name}|a|{data['abstract']}")
+        lines.append(f"{file_base_name}|t|{data['abstract']}")
+    else : 
+        lines.append(f"{file_base_name}|t|null")
     # Check if 'body' key exists and add its content to the lines
     if 'body' in data:
-        lines.append(f"{file_base_name}|b|{data['body']}")
+        lines.append(f"{file_base_name}|a|{data['body']}")
+    else : 
+        lines.append(f"{file_base_name}|a|null")
 
     # If there are any lines to write, create the PubTator file
     if lines:
         with open(output_file, 'w', encoding='utf-8') as f:
-            f.write('\n\n'.join(lines))
+            f.write('\n'.join(lines))
     else:
         logging.info(f"No 'abstract' or 'body' found in file: {input_file}")
 
