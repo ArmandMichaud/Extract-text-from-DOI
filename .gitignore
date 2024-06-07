@@ -163,5 +163,8 @@ cython_debug/
 data_pdf/*.pdf
 data_tei_xml/*tei.xml
 data_json/*json
+data_bern2/*json
+data_bern2_pubtator/*pubtator
+data_pubtator/*pubtator
 logs/*txt
 
