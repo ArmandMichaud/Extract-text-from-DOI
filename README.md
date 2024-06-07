@@ -26,25 +26,21 @@ Bash, apt, Git, Python 3.7 or higher (in a venv).
 ### Grobid Installation
 
 For Grobid, you must have Docker installed: [Docker Installation Guide](https://docs.docker.com/desktop/install/ubuntu/)
-
 ```bash
 sudo apt update && sudo apt install docker.io
 ```
 
 You need to install Grobid: [Grobid GitHub Repository](https://github.com/kermitt2/grobid)
-
 ```bash
 sudo docker run --rm --init --ulimit core=0 -p 8070:8070 grobid/grobid:0.8.0
 ```
 
 You must have the Grobid client for Python installed: [Grobid Python Client](https://github.com/kermitt2/grobid_client_python/tree/master)
-
 ```bash
 pip install grobid
 ```
 
 You must have the parser to analyze tei_xml files installed: [Grobid TEI_XML Parser](https://gitlab.com/internetarchive/grobid_tei_xml)
-
 ```bash
 pip install grobid_tei_xml
 ```
@@ -52,7 +48,7 @@ pip install grobid_tei_xml
 ### BERN2 Installation
 You first need to install BERN2 and its dependencies.
 
-#### Install torch with conda (please check your CUDA version)
+Install torch with conda (please check your CUDA version)
 ```bash
 conda create -n bern2 python=3.7
 conda activate bern2
@@ -60,13 +56,12 @@ conda install pytorch==1.9.0 cudatoolkit=10.2 -c pytorch
 conda install faiss-gpu libfaiss-avx2 -c conda-forge
 ```
 
-#### Check if cuda is available
+Check if cuda is available
 ```bash
 python -c "import torch;print(torch.cuda.is_available())"
 ```
 
-#### Install BERN2
-
+Install BERN2
 ```bash
 git clone git@github.com:dmis-lab/BERN2.git
 cd BERN2
@@ -74,18 +69,18 @@ pip install -r requirements.txt
 ```
 
 Then, you need to download resources (e.g., external modules or dictionaries) for running BERN2. Note that you will need 70GB of free disk space. 
-
 ```bash
 wget http://nlp.dmis.korea.edu/projects/bern2-sung-et-al-2022/resources_v1.1.b.tar.gz
 tar -zxvf resources_v1.1.b.tar.gz
 md5sum resources_v1.1.b.tar.gz
 ```
-#### make sure the md5sum is 'c0db4e303d1ccf6bf56b42eda2fe05d0'
+
+make sure the md5sum is 'c0db4e303d1ccf6bf56b42eda2fe05d0'
 ```bash
 rm -rf resources_v1.1.b.tar.gz
 ```
 
-#### (For Linux Users) install CRF 
+install CRF 
 ```bash
 cd resources/GNormPlusJava
 tar -zxvf CRF++-0.58.tar.gz
@@ -95,6 +90,8 @@ cd CRF
 make
 make install
 cd ../../..
+
+conda deactivate 
 ```
 
 ## Software Installation
@@ -199,6 +196,7 @@ BERN2's git at the following link: [BERN2](https://github.com/dmis-lab/BERN2/blo
 The minimum memory requirement for running BERN2 on GPU is 63.5GB of RAM & 5.05GB of GPU. The following command runs BERN2.
 
 ```bash
+conda activate bern2
 export CUDA_VISIBLE_DEVICES=0
 cd scripts
 
