@@ -111,7 +111,7 @@ def process_json_files(json_directory, res_data_directory):
 
 def main():
     # Directory containing JSON files
-    json_directory = "./json_data"
+    json_directory = "./data_json"
     os.makedirs('data_bern2', exist_ok=True)    
     res_data_directory = "./data_bern2"
     

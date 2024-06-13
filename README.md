@@ -214,7 +214,14 @@ bash run_bern2.sh
 
 #### Using BERN2
 
+After successfully running BERN2 in your local environment, you can access it via RESTful API.
+Input data must be in json format and located in data_json. Output data will be stored in the data_bern2 folder.
 
+```bash
+conda activate bern2
+python3 script_python/bern2_analyse.py 
+
+```
  
 
 
