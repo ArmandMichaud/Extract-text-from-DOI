@@ -23,6 +23,7 @@ The stages are as follows:
 
 Bash, apt, Git, Python 3.7 or higher (in a venv).
 
+
 ### Grobid Installation
 
 For Grobid, you must have Docker installed: [Docker Installation Guide](https://docs.docker.com/desktop/install/ubuntu/)
@@ -103,6 +104,13 @@ git clone https://github.com/ArmandMichaud/Extract-text-from-DOI Extract-text-fr
 cd Extract-text-from-DOI
 ```
 
+to extract images, you need PyMuPDF : 
+
+```bash
+pip install PyMuPDF
+```
+
+
 ## Using the Software
 
 ### Retrieving PMIDs from NCBI
@@ -182,7 +190,18 @@ The .tei.xml files are available in the data_tei_xml/ directory.
 The .json files containing the plain texts are available in the data_json/ directory.  
 If extraction errors are detected, they will be saved in the error file grobid_errors.txt. 
 
+### Extraction of figures 
 
+From the grobid analysis, it is also possible to extract the figures from the coordinates retrieved from the tei.xml files. 
+Taking the tei.xml files and the pdf folder as input, an analysis will generate a folder containing all the images, and an openable html file containing all the figures in the pdf with their legends. 
+The folder containing the tei.xml files should be called data_tei_xml and the folder containing the pdf files should be called data_pdf. Output will be in the data_figure_html folder. 
+
+
+To start figure extraction : 
+
+```bash
+python script_python/extract_figure.py
+```
 
 ### BERN2
 
@@ -222,6 +241,9 @@ conda activate bern2
 python3 script_python/bern2_analyse.py 
 
 ```
+
+
+### 
  
 
 
