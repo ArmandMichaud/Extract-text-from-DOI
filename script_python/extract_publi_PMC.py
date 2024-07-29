@@ -3,6 +3,7 @@ import requests
 import xml.etree.ElementTree as ET
 import re
 import subprocess
+import sys
 
 # Répertoire de sortie pour les PDFs
 output_dir = "data_pdf"
@@ -64,8 +65,18 @@ def get_doi_from_pmid(pmid):
     return doi
 
 def main():
+    if len(sys.argv) != 2:
+        print("Erreur: Veuillez fournir un fichier d'entrée contenant des DOI ou des PMID.")
+        print("Usage: python script.py <fichier_d_entree>")
+        sys.exit(1)
+
+    input_file = sys.argv[1]
+
+    if not os.path.isfile(input_file):
+        print(f"Erreur: Le fichier {input_file} n'existe pas.")
+        sys.exit(1)
+
     # Lire la liste des DOI et PMID à partir du fichier
-    input_file = 'doi.txt'
     with open(input_file, 'r') as f:
         identifiers = [line.strip() for line in f.readlines()]
     
@@ -102,4 +113,7 @@ def main():
             else:
                 print(f"PMCID non trouvé pour l'article {identifier}")
                 log.write(f"PMCID non trouvé pour l'article {identifier}\n")
-main()
+
+if __name__ == "__main__":
+    main()
+
