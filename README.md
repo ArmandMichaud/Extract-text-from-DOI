@@ -146,58 +146,67 @@ To run the script, you need to enter two parameters, the PMIDs file as input, an
 python script_python/PMIDtoDOI.py PMIDs_input.txt doi.txt
 ```
 
+### Retrieval of Scientific Publications in PDF Format
 
+This guide outlines three methods for retrieving scientific publications in PDF format: using PMC, Direct Access, and Sci-Hub. Each method involves importing a text file containing DOI numbers and executing a corresponding script. Publications will be saved in the `data_pdf/` folder, with DOI numbers as their filenames. Special characters in the filenames will be replaced with URL-encoded equivalents.
 
-### Retrieval of scientific publications in PDF format using PMC
+#### General Instructions
 
-import a text file containing the DOI numbers of the publications you want to extract.  
-There's a doi.txt file as an example file type.  
-To run the extraction, you need to specify the txt file containing the DOI and/or PMID list as an argument: 
- 
-```python
-python script_python/extract_publi_PMC.py doi.txt
-```
+1. **Prepare a DOI List**:
+    - Import a text file (`doi.txt`) containing the DOI numbers of the publications you want to extract. An example `doi.txt` file is provided.
+  
+2. **Run the Script**:
+    - Specify the text file containing the DOI list as an argument when running the extraction script.
 
-Publications will be saved in the data_pdf/ folder, with the DOI number as their name, replacing the replacing the '/' with '%2F', the '<' with '%3C', the '>' with '%3E', the ':' with '%3A' and the ';' with '%3B'. 
+3. **Filename Encoding**:
+    - DOI numbers in filenames will have the following replacements: 
+        - '/' with '%2F'
+        - '<' with '%3C'
+        - '>' with '%3E'
+        - ':' with '%3A'
+        - ';' with '%3B'
 
-A significant number of publications are not available on PMC (all those without access). You can try the following method to find the missing publications. 
+#### Method 1: Using PMC
 
+1. **Run the Script**:
 
-### Retrieval of scientific publications in PDF format using Direct Access
+    ```python
+    python script_python/extract_publi_PMC.py doi.txt
+    ```
 
-Using doi, it is possible to retrieve publications if they are open access, but not necessarily available on PMC. So with the following method, you'll check whether the pdf is available free of charge on the page linked to the DOI, then download it. Beware, there may be errors, and an additional check is recommended.
+2. **Notes**:
+    - Publications will be saved in the `data_pdf/` folder.
+    - A significant number of publications may not be available on PMC if they are not open access.
 
-import a text file containing the DOI numbers of the publications you want to extract.  
-There's a doi.txt file as an example file type.  
-To run the extraction, you need to specify the txt file containing the DOI and/or PMID list as an argument: 
+#### Method 2: Using Direct Access
 
-```bash
-bash extract_publi_directaccess.sh doi.txt
-```
+1. **Run the Script**:
 
-Publications will be saved in the data_pdf/ folder, with the DOI number as their name, replacing the replacing the '/' with '%2F', the '<' with '%3C', the '>' with '%3E', the ':' with '%3A' and the ';' with '%3B'. 
+    ```bash
+    bash extract_publi_directaccess.sh doi.txt
+    ```
 
-A large number of publications are still not available with this solution. 
+2. **Notes**:
+    - This method checks if the PDF is available for free on the page linked to the DOI.
+    - There may be errors, and an additional check is recommended.
+    - A large number of publications may still not be available.
 
+#### Method 3: Using Sci-Hub
 
-### Retrieval of scientific publications in PDF format using Sci-Hub 
+1. **Run the Script**:
 
-To get the best possible results, I recommend Sci-hub, but this requires that the site is not blocked in the country you're in, or that you use a VPN to bypass the restrictions. 
-you can try this link: [sci-hub](https://sci-hub.3800808.com/). If this one doesn't work, the script won't work. 
+    ```bash
+    bash extract_publi_scihub.sh doi.txt
+    ```
 
+2. **Notes**:
+    - Ensure that Sci-Hub is accessible in your country or use a VPN to bypass restrictions.
+    - Publications not available on Sci-Hub will be noted in the file `error_extract_scihub.txt`.
+    - You can manually add publications to the `data_pdf/` folder if they could not be extracted with Sci-Hub.
 
-import a text file containing the DOI numbers of the publications you want to extract.  
-There's a doi.txt file as an example file type.  
-To run the extraction, you need to specify the txt file containing the DOI list as an argument:  
+    [Sci-Hub Link](https://sci-hub.3800808.com/) (Note: If this link doesn't work, the script won't work.)
 
-```bash
-bash extract_publi_scihub.sh doi.txt
-```
-
-Publications will be saved in the data_pdf/ folder, with the DOI number as their name, replacing the replacing the '/' with '%2F', the '<' with '%3C', the '>' with '%3E', the ':' with '%3A' and the ';' with '%3B'. 
-Some publications may not be available on Sci-Hub. Their names will be noted in the file "error_extract_scihub.txt".  
-You can manually add publications to be analysed, or publications that could not be extracted with Sci-Hub, simply by adding them to the data_pdf/ folder.  
-
+By following these methods, you can retrieve scientific publications in PDF format effectively.
 
 
 ### Grobid
