@@ -1,66 +1,66 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Script to read the content of a file and extract URL links from <iframe> tags.
-
-
-@author: amichaud
-"""
 
 import re
 import argparse
+from urllib.parse import urljoin
 
 def read_file_content(file_name):
-    """
-    Read the content of a file.
-
-    Args:
-        file_name (str): The name of the file to read.
-
-    Returns:
-        str: The content of the file.
-    """
+    """Read the content of a file."""
     try:
-        with open(file_name, 'r') as file:
-            text = file.read()
-            return text
+        with open(file_name, 'r', encoding='utf-8') as file:
+            return file.read()
     except FileNotFoundError:
         print("err: The specified file does not exist.")
         return ''
 
-def parse_file(text):
-    """
-    Extract URL links from <iframe> tags in the provided text.
+def extract_pdf_urls(text, base_url="https://sci-hub.se/"):
+    """Extracts all possible PDF URLs from the HTML page."""
 
-    Args:
-        text (str): The text in which to search for <iframe> tags.
+    possible_urls = set()  # Utilisation d'un set pour éviter les doublons
 
-    Returns:
-        None
-    """
-    # Using a regular expression to extract the content of the <iframe> tag
-    pattern = r'<iframe[^>]*>.*?</iframe>'
-    iframe_content = re.findall(pattern, text, re.DOTALL)
+    # 1️⃣ Chercher les URLs dans les balises `onclick` des boutons (<button>)
+    button_pattern = r"onclick=['\"]location.href=['\"](//[^'\"]+\.pdf)[?'\"]?"
+    for match in re.findall(button_pattern, text):
+        possible_urls.add(urljoin(base_url, match))
 
-    # Using a regular expression to extract the HTTP link contained within the <iframe> tag text
-    if iframe_content:
-        src_content = iframe_content[0]
-        pattern_src = r'src="([^"]*)"'
-        src_link = re.search(pattern_src, src_content)
+    # 2️⃣ Chercher les balises `<embed>` contenant un PDF
+    embed_pattern = r'<embed[^>]+src=["\'](//[^"\']+\.pdf)[^"\']*["\']'
+    for match in re.findall(embed_pattern, text):
+        possible_urls.add(urljoin(base_url, match))
 
-        if src_link:
-            iframe_src_url = src_link.group(1)
-            print(iframe_src_url)
-        else:
-            print("err: No link found inside the <iframe> tag.")
-    else:
-        print("err: No <iframe> tag found in the HTML content.")
+    # 3️⃣ Chercher les balises `<iframe>` contenant un PDF
+    iframe_pattern = r'<iframe[^>]+src=["\'](//[^"\']+\.pdf)["\']'
+    for match in re.findall(iframe_pattern, text):
+        possible_urls.add(urljoin(base_url, match))
+
+    # 4️⃣ Chercher les balises `<a>` contenant un lien vers un PDF
+    a_href_pattern = r'href=["\'](https?://[^"\']+\.pdf)["\']'
+    for match in re.findall(a_href_pattern, text):
+        possible_urls.add(match)
+
+    # 5️⃣ Chercher les liens PDF dans du JavaScript (ex: `window.location.href = 'URL'`)
+    js_pattern = r'window\.location\.href\s*=\s*["\'](https?://[^"\']+\.pdf)["\']'
+    for match in re.findall(js_pattern, text):
+        possible_urls.add(match)
+
+    # 📌 Si des liens sont trouvés, les afficher
+    if possible_urls:
+        for url in possible_urls:
+            print(url)
+        return
+
+    # 📌 Si aucun lien trouvé, on sauvegarde le fichier pour analyse
+    with open("debug_scihub.html", "w", encoding="utf-8") as debug_file:
+        debug_file.write(text)
+
+    print("err: No valid PDF URL found.")
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Read the content of a file.')
+    parser = argparse.ArgumentParser(description='Extract publication URL from Sci-Hub page.')
     parser.add_argument('file_name', type=str, help='Name of the file to read')
 
     args = parser.parse_args()
     text = read_file_content(args.file_name)
-    parse_file(text)
+    extract_pdf_urls(text)
 
