@@ -31,7 +31,7 @@ publication_num=1
 while IFS= read -r doi; do
 
   # Download the corresponding page
-  wget -O temppage --header="User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36" "https://sci-hub.3800808.com/$doi"
+  wget -O temppage --header="User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36" "https://sci-hub.ru/$doi"
 
   # Execute the Python script to extract the URL
   url=$(python3 script_python/extract_publi.py temppage)
